@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Marrianita Design</title>
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;700&display=swap" rel="stylesheet" />
+
+  <style>
+    :root{
+      --header-pad: 24px;                  /* un poco más compacto */
+      --color-primary:#7C3AED;
+      --color-primary-700:#6D28D9;
+      --bg:#0E0E12;
+      --surface:#151521;
+      --text:#FFFFFF;
+      --text-muted:#D1D5DB;
+      --border:#2A2A3A;
+      --highlight:#DDD6FE;
+      --container-w: 1200px;               /* ancho máximo del header */
+    }
+
+    html{ scroll-behavior:smooth; }
+    body{
+      margin:0; padding:0;
+      font-family:'Barlow', system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, "Helvetica Neue", Arial, sans-serif;
+      color: var(--text);
+      background: var(--bg);
+    }
+
+    /* ===================== HERO ===================== */
+    section{ min-height:100svh; }
+
+    #hero{
+      position:relative; isolation:isolate; overflow:hidden;
+      display:grid; place-items:center;
+      background:
+        radial-gradient(ellipse at center, rgba(0,0,0,.08), rgba(0,0,0,.3) 60%, rgba(0,0,0,.6)),
+        linear-gradient(120deg,#f5c0c0 0%, #fdeede 50%, #bfe9e9 100%);
+    }
+    #hero::before{
+      content:""; position:absolute; inset:0; z-index:-1;
+      background:
+        radial-gradient(1200px 800px at 70% 30%, color-mix(in oklab, var(--color-primary) 24%, transparent), transparent 70%),
+        radial-gradient(900px 600px at 20% 70%, color-mix(in oklab, var(--color-primary-700) 18%, transparent), transparent 65%),
+        linear-gradient(160deg,#0B0B10 0%, #0F0F15 40%, #11111A 60%, #0E0E12 100%);
+      filter:saturate(1.05);
+    }
+    #hero::after{
+      content:""; position:absolute; inset:-20%; z-index:-1;
+      background:
+        radial-gradient(35% 35% at 30% 35%, color-mix(in oklab, var(--color-primary) 14%, transparent) 0%, transparent 60%),
+        radial-gradient(28% 28% at 70% 65%, color-mix(in oklab, var(--color-primary-700) 12%, transparent) 0%, transparent 60%),
+        conic-gradient(from 210deg at 50% 50%, #11111A, #0E0E12, #151521, #0E0E12, #11111A);
+      opacity:.55; animation: hero-bg-pan 28s ease-in-out infinite alternate; transform:translateZ(0);
+    }
+    #hero .sp-container{ position:relative; width:100%; height:100%; }
+    #hero .sp-content{
+      position:absolute; inset:0; display:grid; place-items:center; text-align:center;
+      padding-top: calc(var(--header-pad) * 2 + 8px);
+    }
+    #hero .sp-content h2{
+      position:absolute; inset-inline:0; top:50%; transform:translateY(-50%);
+      margin:0; line-height:1.05; font-size:clamp(2rem, 9vw, 6rem); letter-spacing:.02em;
+      color:transparent; text-shadow:0 0 1px #fff; animation: hero-blurFadeInOut 3s ease-in both;
+    }
+    #hero .sp-content h2.frame-1{ animation-delay:0s; }
+    #hero .sp-content h2.frame-2{ animation-delay:3s; }
+    #hero .sp-content h2.frame-3{ animation-delay:6s; }
+    #hero .sp-content h2.frame-4{ animation-delay:9s; font-size:clamp(3rem, 18vw, 12rem); font-weight:700; }
+    #hero .sp-content h2.frame-5{ animation:none; color:transparent; text-shadow:0 0 1px #fff; }
+    #hero .sp-content h2.frame-5 span{ display:inline-block; margin:0 .25ch; animation: hero-blurFadeIn 3s ease-in 12s both; }
+    #hero .sp-content h2.frame-5 span:nth-child(2){ animation-delay:13s; }
+    #hero .sp-content h2.frame-5 span:nth-child(3){ animation-delay:14s; }
+    /* === HERO CTA — pill violeta, centrado, accesible === */
+#hero .sp-circle-link{
+  position: absolute;
+  bottom: calc(max(24px, 6vh) + env(safe-area-inset-bottom));
+  left: 50%;
+  transform: translate(-50%, 0); /* fuerza el centrado */
+
+  /* layout */
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 20px;
+  border-radius: 999px;
+
+  /* look & feel */
+  background: linear-gradient(90deg, var(--color-primary), var(--color-primary-700));
+  color: #fff;
+  font-weight: 800;
+  font-size: clamp(14px, 1rem, 16px);
+  letter-spacing: .2px;
+  text-decoration: none;
+  border: 1px solid rgba(255,255,255,.08);
+  box-shadow:
+    0 10px 30px rgba(124,58,237,.28),
+    0 1px 0 rgba(255,255,255,.06) inset;
+
+  /* motion (suave) */
+  transform: translate(-50%, 0) translateZ(0);
+  animation: hero-cta-in .6s cubic-bezier(.2,.7,.2,1) .2s both;
+  will-change: transform;
+}
+
+/* flecha al final */
+/* flecha al final — versión segura (SVG inline URL-encoded) */
+#hero .sp-circle-link::after{
+  content:"";
+  width: 18px;
+  height: 18px;
+  flex: 0 0 18px;
+  background: currentColor;
+
+  /* Safari + Chrome (WebKit/Blink) */
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M8 5l8 7-8 7' fill='none' stroke='%23fff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat center / contain;
+
+  /* Estándar */
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M8 5l8 7-8 7' fill='none' stroke='%23fff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat center / contain;
+
+  opacity: .95;
+  transition: transform .18s ease;
+}
+
+
+/* hover/active/focus */
+#hero .sp-circle-link:hover{ transform: translate(-50%, -2px); }
+#hero .sp-circle-link:hover::after{ transform: translateX(2px); }
+#hero .sp-circle-link:active{ transform: translate(-50%, 0) scale(.98); }
+#hero .sp-circle-link:focus-visible{
+  outline: 2px solid var(--highlight);
+  outline-offset: 3px;
+}
+
+/* sutil brillo en el borde superior */
+#hero .sp-circle-link::before{
+  content: "";
+  position: absolute; inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(180deg, rgba(255,255,255,.35), transparent 40%);
+  mix-blend-mode: overlay;
+  opacity: .25;
+  pointer-events: none;
+}
+
+/* entrada */
+@keyframes hero-cta-in{
+  from{ opacity: 0; transform: translate(-50%, 10px); }
+  to  { opacity: 1; transform: translate(-50%, 0); }
+}
+
+/* menos movimiento si el usuario lo pide */
+@media (prefers-reduced-motion: reduce){
+  #hero .sp-circle-link{ animation:none !important; }
+}
+
+    @keyframes hero-blurFadeInOut{
+      0%{ opacity:0; text-shadow:0 0 40px #fff; transform:translateY(-50%) scale(1.2); }
+      20%,75%{ opacity:1; text-shadow:0 0 1px #fff; transform:translateY(-50%) scale(1); }
+      100%{ opacity:0; text-shadow:0 0 50px #fff; transform:translateY(-50%) scale(.9); }
+    }
+    @keyframes hero-blurFadeIn{
+      0%{ opacity:0; text-shadow:0 0 40px #fff; transform:scale(1.2); }
+      50%{ opacity:.5; text-shadow:0 0 10px #fff; transform:scale(1.08); }
+      100%{ opacity:1; text-shadow:0 0 1px #fff; transform:scale(1); }
+    }
+    @keyframes hero-fadeInRotate{
+      0%{ opacity:0; transform:scale(0) rotate(360deg); }
+      100%{ opacity:1; transform:scale(1) rotate(0deg); }
+    }
+    @keyframes hero-bg-pan{
+      0%{ transform: translate(-2%, -2%) scale(1.05) rotate(.2deg); filter:hue-rotate(0deg); }
+      50%{ transform: translate(2%, 1%) scale(1.07) rotate(-.2deg); filter:hue-rotate(-6deg); }
+      100%{ transform: translate(-1%, 2%) scale(1.04) rotate(0); filter:hue-rotate(6deg); }
+    }
+    @media (prefers-reduced-motion: reduce){
+      #hero .sp-content h2, #hero .sp-content h2.frame-5 span, #hero .sp-circle-link{
+        animation:none !important; opacity:1 !important; transform:none !important; text-shadow:none !important; position:static;
+      }
+      #hero .sp-content{ place-items:start; padding-top: calc(var(--header-pad) * 2 + 24px); }
+      #hero::after{ animation:none !important; }
+    }
+
+    /* ===================== NAV NUEVO ===================== */
+    #site-header{
+      position:fixed; inset:0 0 auto 0; width:100%; z-index:30;
+      background: color-mix(in oklab, var(--bg) 86%, transparent);
+      backdrop-filter: blur(8px);
+    }
+    /* contenedor centrado */
+    #site-header .inner{
+      max-width: min(var(--container-w), 92vw);
+      margin: 0 auto;
+      display:grid; grid-template-columns:1fr auto 1fr; align-items:center; gap:16px;
+      padding: var(--header-pad) 0;
+    }
+
+    #site-header .brand{ display:inline-flex; align-items:center; gap:12px; text-decoration:none; color:var(--text); }
+    #site-header .brand-text{ font-weight:700; letter-spacing:.2px; }
+
+    #site-header .nav-toggle{
+      justify-self:end; background:transparent; border:0; padding:10px; border-radius:12px; cursor:pointer; color:var(--text);
+    }
+    #site-header .nav-toggle:focus-visible{ outline:2px solid var(--highlight); outline-offset:3px; }
+    #site-header .icon .bar{ fill:none; stroke:var(--text); stroke-width:2.5; stroke-linecap:round; transition: transform .35s ease, opacity .25s ease, stroke .2s ease; }
+    #site-header .nav-toggle[aria-expanded="true"] .bar1{ transform: translateY(6px) rotate(45deg); }
+    #site-header .nav-toggle[aria-expanded="true"] .bar2{ opacity:0; }
+    #site-header .nav-toggle[aria-expanded="true"] .bar3{ transform: translateY(-6px) rotate(-45deg); }
+
+    #site-header .nav{ grid-column:2 / 4; display:flex; align-items:center; justify-content:flex-end; gap:20px; }
+    #site-header .nav-list{ display:none; list-style:none; margin:0; padding:0; align-items:center; gap:18px; }
+    #site-header .nav-list a{
+      position:relative; display:inline-block; padding:10px 6px; color:var(--text); text-decoration:none; font-weight:600;
+    }
+    #site-header .nav-list a::after{
+      content:""; position:absolute; left:0; bottom:6px; height:2px; width:100%;
+      background: linear-gradient(90deg,var(--color-primary),var(--color-primary-700));
+      transform: scaleX(0); transform-origin:left; transition: transform .28s ease;
+    }
+    #site-header .nav-list a:hover::after, #site-header .nav-list a:focus-visible::after{ transform: scaleX(1); }
+    #site-header .nav-list a:focus-visible{ outline:2px solid var(--highlight); outline-offset:3px; border-radius:6px; }
+
+    #site-header .cta{
+      display:none; padding:10px 14px; border-radius:12px;
+      background: linear-gradient(90deg,var(--color-primary),var(--color-primary-700));
+      color:#fff; text-decoration:none; font-weight:700; box-shadow:0 6px 20px rgba(124,58,237,.25);
+      transition: transform .15s ease, box-shadow .2s ease;
+    }
+    #site-header .cta:hover{ transform: translateY(-1px); box-shadow:0 8px 24px rgba(124,58,237,.35); }
+    #site-header .cta:focus-visible{ outline:2px solid var(--highlight); outline-offset:3px; }
+
+    /* Overlay oculto por defecto (desktop/tablet) */
+    #site-header .mobile-overlay{ display:none; }
+
+    /* ===== Mobile — Overlay fullscreen ===== */
+    @media (max-width:960px){
+      #site-header .inner{
+        grid-template-columns:auto auto; gap:12px;
+        padding: 14px 0;
+      }
+      #site-header{ border-bottom: 1px solid var(--border); }
+      #site-header .nav{ display:contents; }
+      #site-header .nav-list, #site-header .cta{ display:none; }
+      #site-header .icon .bar{ stroke:#fff; }
+
+      #site-header .mobile-overlay{
+        display:grid; position:fixed; inset:0; z-index:60;
+        grid-template-rows:auto 1fr;
+        min-height:100dvh;
+        padding-top:max(18px, env(safe-area-inset-top));
+        padding-right:max(18px, env(safe-area-inset-right));
+        padding-left:max(18px, env(safe-area-inset-left));
+        padding-bottom:0;
+        background: var(--bg);
+        opacity:0; visibility:hidden; pointer-events:none;
+        transform:translateY(8px);
+        transition: opacity .28s ease, transform .28s ease, visibility 0s linear .28s;
+      }
+      #site-header .mobile-overlay::before{
+        content:""; position:absolute; inset:0; z-index:-1;
+        background:
+          radial-gradient(1200px 800px at 70% 30%, color-mix(in oklab, var(--color-primary) 12%, transparent), transparent 70%),
+          radial-gradient(900px 600px at 20% 70%, color-mix(in oklab, var(--color-primary-700) 10%, transparent), transparent 65%);
+        opacity:.45;
+      }
+      #site-header .mobile-overlay[data-open="true"]{
+        opacity:1; visibility:visible; pointer-events:auto; transform:translateY(0);
+        transition: opacity .28s ease, transform .28s ease;
+      }
+
+      .overlay-head{
+        display:flex; align-items:center; justify-content:space-between; gap:12px; padding-bottom:8px;
+        max-width:min(var(--container-w), 92vw); margin:0 auto; width:100%;
+      }
+
+      .overlay-nav{
+        overflow:auto; -webkit-overflow-scrolling:touch; overscroll-behavior:contain;
+        display:grid; align-content:center; gap:12px;
+        padding:12px 0 max(120px, calc(24px + env(safe-area-inset-bottom))); /* deja lugar para el CTA fijo */
+        max-width:min(var(--container-w), 92vw); margin:0 auto; width:100%;
+      }
+      .overlay-nav a{
+        display:flex; align-items:center; justify-content:space-between; gap:12px;
+        padding:16px; border-radius:14px;
+        background:#161626; border:1px solid #26263A; color:var(--text); text-decoration:none;
+        font-weight:800; letter-spacing:.2px;
+        box-shadow:0 1px 0 rgba(255,255,255,.03) inset, 0 10px 20px rgba(0,0,0,.25);
+        transform:translateY(14px); opacity:0; animation: navItemIn .45s cubic-bezier(.2,.7,.2,1) both;
+      }
+      #mobile-overlay[data-open="true"] .overlay-nav a:nth-child(1){ animation-delay:.05s; }
+      #mobile-overlay[data-open="true"] .overlay-nav a:nth-child(2){ animation-delay:.10s; }
+      #mobile-overlay[data-open="true"] .overlay-nav a:nth-child(3){ animation-delay:.15s; }
+      #mobile-overlay[data-open="true"] .overlay-nav a:nth-child(4){ animation-delay:.20s; }
+
+      .overlay-nav a::after{
+        content:""; flex:0 0 20px; height:20px;
+        mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"><path d="M7 4l6 6-6 6" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>') no-repeat center/contain;
+        -webkit-mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"><path d="M7 4l6 6-6 6" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>') no-repeat center/contain;
+        background:#D1D5DB; opacity:.9; transition: transform .18s ease, opacity .18s ease;
+      }
+      .overlay-nav a:active{ transform: scale(.98); }
+      .overlay-nav a:hover::after{ transform: translateX(2px); }
+
+      .overlay-nav a.is-active{
+        border-color:var(--color-primary);
+        box-shadow:0 0 0 1px color-mix(in oklab, var(--color-primary) 40%, transparent) inset, 0 10px 24px rgba(124,58,237,.25);
+      }
+
+      /* CTA fijo abajo, centrado y siempre visible */
+      .overlay-footer{
+        position:fixed; left:0; right:0; bottom:0; z-index:61;
+        padding:14px max(18px, env(safe-area-inset-right)) calc(14px + env(safe-area-inset-bottom)) max(18px, env(safe-area-inset-left));
+        background: linear-gradient(180deg, rgba(14,14,18,0) 0%, rgba(14,14,18,.85) 30%, var(--bg) 100%);
+        display:grid; place-items:center;
+      }
+      .overlay-footer .cta{
+        width:min(var(--container-w), 92vw); padding:16px 18px; border-radius:16px;
+        background: linear-gradient(90deg,var(--color-primary),var(--color-primary-700));
+        color:#fff; text-decoration:none; font-weight:900;
+        box-shadow:0 10px 30px rgba(124,58,237,.28);
+        transform:translateY(14px); opacity:0; animation: navItemIn .45s cubic-bezier(.2,.7,.2,1) .26s both;
+      }
+
+      body[data-nav-open="true"]{ overflow:hidden; }
+    }
+
+    @keyframes navItemIn{
+      from{ opacity:0; transform: translateY(18px) scale(.98); }
+      to  { opacity:1; transform: translateY(0)    scale(1); }
+    }
+
+    @media (min-width:961px){
+      #site-header .nav-toggle{ display:none; }
+      #site-header .nav{ grid-column:2 / 4; }
+      #site-header .nav-list{ display:inline-flex; }
+      #site-header .cta{ display:inline-flex; }
+    }
+    @media (prefers-reduced-motion: reduce){
+      #site-header .icon .bar, #site-header .nav, #site-header .nav-list a::after, #site-header .cta{ transition:none !important; }
+      #site-header .mobile-overlay, .overlay-nav a, .overlay-footer .cta{ animation:none !important; opacity:1 !important; transform:none !important; }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- ===== HEADER ===== -->
+  <header id="site-header">
+    <div class="inner">
+      <a class="brand" href="#hero" aria-label="Ir al inicio">
+        <img src="logo.svg" width="40" height="40" alt="Isotipo M" />
+        <span class="brand-text">Marrianita Design</span>
+      </a>
+
+      <button class="nav-toggle" aria-label="Abrir menú" aria-expanded="false" aria-controls="primary-nav">
+        <svg class="icon" viewBox="0 0 24 24" width="28" height="28" aria-hidden="true" focusable="false">
+          <path class="bar bar1" d="M3 6h18" />
+          <path class="bar bar2" d="M3 12h18" />
+          <path class="bar bar3" d="M3 18h18" />
+        </svg>
+      </button>
+
+      <nav id="primary-nav" class="nav" aria-label="Principal">
+        <ul class="nav-list">
+          <li><a href="#hero">Inicio</a></li>
+          <li><a href="#conocimientos">Conocimientos</a></li>
+          <li><a href="#portfolio">Portfolio</a></li>
+          <li><a href="#contacto">Contacto</a></li>
+        </ul>
+        <a class="cta" href="#contacto">Trabajemos</a>
+      </nav>
+
+      <!-- Overlay móvil -->
+      <div class="mobile-overlay" id="mobile-overlay" aria-hidden="true" role="dialog" aria-modal="true">
+        <div class="overlay-head">
+          <a class="brand" href="#hero" aria-label="Ir al inicio">
+            <img src="logo.svg" width="36" height="36" alt="Isotipo M" />
+            <span class="brand-text">Marrianita Design</span>
+          </a>
+          <button class="nav-toggle" aria-label="Cerrar menú" aria-expanded="true" aria-controls="mobile-overlay">
+            <svg class="icon" viewBox="0 0 24 24" width="28" height="28" aria-hidden="true">
+              <path class="bar bar1" d="M3 6h18"/>
+              <path class="bar bar2" d="M3 12h18"/>
+              <path class="bar bar3" d="M3 18h18"/>
+            </svg>
+          </button>
+        </div>
+
+        <nav class="overlay-nav" aria-label="Menú móvil">
+          <a href="#hero">Inicio</a>
+          <a href="#conocimientos">Conocimientos</a>
+          <a href="#portfolio">Portfolio</a>
+          <a href="#contacto">Contacto</a>
+        </nav>
+
+        <div class="overlay-footer">
+          <a class="cta" href="#contacto">Trabajemos</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== HERO ===== -->
+  <section id="hero">
+    <div class="sp-container">
+      <div class="sp-content">
+        <h2 class="frame-1">MARCAS CON PROPÓSITO</h2>
+        <h2 class="frame-2">IDENTIDADES QUE ESCALAN</h2>
+        <h2 class="frame-3">DISEÑO QUE VENDE</h2>
+        <h2 class="frame-4">BRANDING</h2>
+        <h2 class="frame-5">
+          <span>INVESTIGAR,</span>
+          <span>DISEÑAR,</span>
+          <span>LANZAR.</span>
+        </h2>
+
+        <a class="sp-circle-link" href="#conocimientos">Conocé más</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Resto de secciones -->
+  <section id="conocimientos" style="background-color: rgb(253, 247, 239);"></section>
+  <section id="portfolio" style="background-color: rgb(176, 176, 174);"></section>
+  <section id="contacto" style="background-color: rgb(253, 247, 239);"></section>
+  <section style="background-color: rgb(2, 15, 15);"></section>
+
+  <!-- ===== JS ===== -->
+  <script>
+(function () {
+  const header  = document.querySelector('#site-header');
+  const btns    = header.querySelectorAll('.nav-toggle'); // hay 2 en mobile (abrir/cerrar)
+  const overlay = document.getElementById('mobile-overlay');
+
+  function setOpen(open) {
+    const isOpen = !!open;
+    btns.forEach(b => b.setAttribute('aria-expanded', isOpen ? 'true' : 'false'));
+    overlay.dataset.open = isOpen ? 'true' : 'false';
+    overlay.setAttribute('aria-hidden', isOpen ? 'false' : 'true'); // ← corregido
+    document.body.dataset.navOpen = isOpen ? 'true' : 'false';
+
+    if (isOpen) {
+      const first = overlay.querySelector('a,button');
+      first && first.focus({ preventScroll: true });
+    } else {
+      const opener = header.querySelector('.nav-toggle');
+      opener && opener.focus({ preventScroll: true });
+    }
+  }
+
+  // Abrir/cerrar con cualquiera de los dos botones
+  btns.forEach(b => b.addEventListener('click', () => {
+    const open = b.getAttribute('aria-expanded') !== 'true';
+    setOpen(open);
+  }));
+
+  // Cerrar con ESC
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && overlay.dataset.open === 'true') setOpen(false);
+  });
+
+  // Cerrar clickeando fuera
+  document.addEventListener('click', e => {
+    if (overlay.dataset.open === 'true') {
+      const insideOverlay = e.target.closest('#mobile-overlay');
+      const insideHeader  = e.target.closest('#site-header');
+      if (!insideOverlay && !insideHeader) setOpen(false);
+    }
+  });
+
+  // Cerrar al navegar dentro del overlay
+  overlay.addEventListener('click', e => {
+    const a = e.target.closest('a[href^="#"]');
+    if (a) setOpen(false);
+  });
+})();
+</script>
+
+  <script>
+    (function(){
+      const overlay = document.getElementById('mobile-overlay');
+      const links = Array.from(overlay.querySelectorAll('.overlay-nav a'));
+      function setActiveByHash(hash){
+        links.forEach(a => a.classList.toggle('is-active', a.getAttribute('href') === hash));
+      }
+      setActiveByHash(location.hash || '#hero');
+      overlay.addEventListener('click', e=>{
+        const a = e.target.closest('a[href^="#"]');
+        if(!a) return;
+        setActiveByHash(a.getAttribute('href'));
+      });
+      window.addEventListener('hashchange', () => setActiveByHash(location.hash));
+    })();
+  </script>
+</body>
+</html>
