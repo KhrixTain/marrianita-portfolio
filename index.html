@@ -1,11 +1,22 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+    <!-- Preconexión: resuelve DNS/TLS antes -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Marrianita Design</title>
   <link rel="icon" href="favicon.ico" type="image/x-icon">
-  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;700&display=swap" rel="stylesheet" />
+<!-- Carga no-bloqueante de la hoja de estilos de Google Fonts -->
+<link rel="preload"
+      as="style"
+      href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;700&display=swap"
+      onload="this.onload=null;this.rel='stylesheet'">
+<noscript>
+  <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;700&display=swap">
+</noscript>
 
   <style>
     :root{
