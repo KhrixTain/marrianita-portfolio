@@ -187,25 +187,47 @@
         radial-gradient(ellipse at center, rgba(0,0,0,.08), rgba(0,0,0,.3) 60%, rgba(0,0,0,.6)),
         linear-gradient(120deg,#f5c0c0 0%, #fdeede 50%, #bfe9e9 100%);
     }
+    #hero .hero-video-layer{
+      position:absolute; inset:0; z-index:-2;
+      opacity:0; transition: opacity .6s ease;
+      background:inherit;
+      overflow:hidden; pointer-events:none;
+    }
+    #hero .hero-video-layer.is-active{ opacity:1; }
+    #hero .hero-video-layer::after{
+      content:""; position:absolute; inset:0;
+      background:linear-gradient(160deg, rgba(6,6,12,.7) 0%, rgba(5,5,10,.35) 40%, rgba(6,4,11,.65) 100%);
+      mix-blend-mode:multiply;
+    }
+    #hero .hero-video-layer video{
+      width:100%; height:100%; object-fit:cover;
+      filter:saturate(1.15);
+      display:block;
+    }
     #hero::before{
-      content:""; position:absolute; inset:0; z-index:-1;
+      content:""; position:absolute; inset:0; z-index:-1; opacity:1;
       background:
         radial-gradient(1200px 800px at 70% 30%, color-mix(in oklab, var(--color-primary) 24%, transparent), transparent 70%),
         radial-gradient(900px 600px at 20% 70%, color-mix(in oklab, var(--color-primary-700) 18%, transparent), transparent 65%),
         linear-gradient(160deg,#0B0B10 0%, #0F0F15 40%, #11111A 60%, #0E0E12 100%);
       filter:saturate(1.05);
+      transition:opacity .6s ease;
     }
     #hero::after{
-      content:""; position:absolute; inset:-20%; z-index:-1;
+      content:""; position:absolute; inset:-20%; z-index:-1; opacity:1;
       background:
         radial-gradient(35% 35% at 30% 35%, color-mix(in oklab, var(--color-primary) 14%, transparent) 0%, transparent 60%),
         radial-gradient(28% 28% at 70% 65%, color-mix(in oklab, var(--color-primary-700) 12%, transparent) 0%, transparent 60%),
         conic-gradient(from 210deg at 50% 50%, #11111A, #0E0E12, #151521, #0E0E12, #11111A);
       opacity:.55; animation: hero-bg-pan 28s ease-in-out infinite alternate; transform:translateZ(0);
+      transition:opacity .6s ease;
     }
+    #hero.has-hero-video::before{ opacity:.5; }
+    #hero.has-hero-video::after{ opacity:.35; }
     #hero .sp-container{ position:relative; width:100%; height:100%; }
     #hero .sp-content{
       position:absolute; inset:0; display:grid; place-items:center; text-align:center;
+      z-index:1;
       padding-top: calc(var(--header-pad) * 2 + 8px);
     }
     #hero .sp-content h2{
@@ -336,11 +358,102 @@
     .faq-content{ height:0; overflow:hidden; }
 
     /* ==============================================
-       4) OTRAS SECCIONES (placeholders visuales)
+       4) PORTFOLIO MINI BANNERS
        ============================================== */
-    #portfolio{ background:#B0B0AE; min-height:60svh; }
+    #portfolio{
+      position:relative; isolation:isolate;
+      background:#050507;
+      color:var(--text);
+      scroll-margin-top: calc(var(--header-pad) + 32px);
+    }
+    #portfolio::before{
+      content:""; position:absolute; inset:0; z-index:0;
+      background:
+        radial-gradient(900px 900px at 85% 10%, color-mix(in oklab, var(--color-primary) 18%, transparent) 0%, transparent 60%),
+        radial-gradient(600px 600px at 10% 30%, color-mix(in oklab, var(--color-primary-700) 12%, transparent) 0%, transparent 60%),
+        linear-gradient(160deg,#07070B,#0A0A10 55%,#040407);
+      opacity:.9;
+    }
+    #portfolio .portfolio-inner{ position:relative; z-index:1; padding: clamp(56px, 14vw, 160px) 0; display:grid; gap:32px; }
+    .portfolio-head{ display:grid; gap:14px; max-width:900px; }
+    .portfolio-head .eyebrow{
+      letter-spacing:.32em; text-transform:uppercase; font-size:12px; font-weight:700;
+      color:color-mix(in oklab, var(--text-muted) 85%, transparent);
+    }
+    .portfolio-head h2{ margin:0; font-size:clamp(32px, 6vw, 56px); line-height:1.05; letter-spacing:-.01em; }
+    .portfolio-copy{ margin:0; max-width:65ch; color:var(--text-muted); font-size:clamp(16px, 2vw, 18px); }
+
+    .portfolio-controls{ display:flex; flex-wrap:wrap; gap:10px; }
+    .filter-chip{
+      border:1px solid color-mix(in oklab, var(--border) 80%, transparent);
+      background:rgba(255,255,255,.02);
+      color:var(--text);
+      border-radius:999px;
+      padding:8px 16px;
+      font-size:14px; letter-spacing:.03em;
+      cursor:pointer;
+      transition: border-color .2s ease, background .2s ease, color .2s ease, transform .2s ease;
+    }
+    .filter-chip:hover{ transform:translateY(-1px); border-color:color-mix(in oklab, var(--color-primary) 35%, transparent); }
+    .filter-chip:focus-visible{ outline:2px solid var(--highlight); outline-offset:3px; }
+    .filter-chip.is-active{
+      background:color-mix(in oklab, var(--color-primary) 18%, transparent);
+      border-color:color-mix(in oklab, var(--color-primary) 35%, transparent);
+    }
+
+    .project-grid{ display:grid; gap:18px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+    .project-card{
+      position:relative; border-radius:28px; overflow:hidden;
+      background:#11121C; border:1px solid rgba(255,255,255,.05);
+      aspect-ratio:1 / 1;
+      opacity:0; transform:translateY(24px);
+    }
+    @supports not (aspect-ratio: 1 / 1){
+      .project-card::before{ content:""; display:block; padding-top:100%; }
+    }
+    .project-card.is-visible{ animation: cardIn .7s cubic-bezier(.2,.7,.2,1) var(--delay, 0ms) forwards; }
+    .project-card.is-hidden{ display:none; }
+    .project-link{
+      position:absolute; inset:0; display:flex; flex-direction:column; justify-content:flex-end;
+      padding:20px; text-decoration:none; color:inherit;
+      z-index:1;
+    }
+    .project-media{
+      position:absolute; inset:0; background-size:cover; background-position:center;
+      z-index:0;
+      filter:saturate(1.05);
+      transition: transform .6s ease, filter .4s ease;
+    }
+    .project-card::after{
+      content:""; position:absolute; inset:0;
+      background: linear-gradient(180deg, rgba(3,3,6,.1), rgba(3,3,6,.85));
+      pointer-events:none; z-index:0;
+    }
+    .project-card:hover .project-media{ transform:scale(1.06); filter:saturate(1.2); }
+    @media (hover:none){ .project-card:hover .project-media{ transform:none; filter:saturate(1.05); } }
+
+    .project-meta{ position:relative; z-index:1; display:flex; flex-direction:column; gap:10px; }
+    .tag-list{ list-style:none; margin:0; padding:0; display:flex; flex-wrap:wrap; gap:6px; }
+    .tag-list li{ font-size:12px; padding:4px 10px; border-radius:999px; background:rgba(8,8,12,.65); border:1px solid rgba(255,255,255,.08); }
+    .project-meta h3{ margin:0; font-size:clamp(16px, 2.3vw, 22px); text-shadow:0 3px 25px rgba(0,0,0,.8); }
+
+    .portfolio-status{ margin:0; color:var(--text-muted); min-height:24px; opacity:1; transition: opacity .25s ease; }
+    .portfolio-status.is-idle{ opacity:0; }
+
+    /* ==============================================
+       5) OTRAS SECCIONES
+       ============================================== */
     #contacto{ background:#FDF7EF; min-height:60svh; }
     #extra{ background:#020F0F; min-height:40svh; }
+
+    .page-transition{
+      position:fixed; inset:0; background:var(--bg);
+      z-index:200; pointer-events:none; transform-origin:left;
+      transform:scaleX(0); opacity:.95;
+      transition: transform .5s cubic-bezier(.6,.02,.22,1), opacity .5s ease;
+    }
+    .page-transition.is-active{ pointer-events:auto; transform:scaleX(1); }
+
 
     /* ==============================================
        9) ANIMATIONS + MEDIA PREFS
@@ -362,13 +475,21 @@
     }
     @keyframes hero-cta-in{ from{ opacity:0; transform: translate(-50%, 10px); } to{ opacity:1; transform: translate(-50%, 0); } }
     @keyframes navItemIn{ from{ opacity:0; transform: translateY(18px) scale(.98); } to{ opacity:1; transform: translateY(0) scale(1); } }
+    @keyframes cardIn{
+      0%{ opacity:0; transform: translateY(28px) scale(.98); }
+      60%{ opacity:1; }
+      100%{ opacity:1; transform: translateY(0) scale(1); }
+    }
 
     @media (prefers-reduced-motion: reduce){
       .icon .bar, .nav-list a::after, .btn-cta, .mobile-overlay, .overlay-nav a, .overlay-footer .btn-cta,
-      #hero .sp-content h2, #hero .sp-content h2.frame-5 span, #hero .sp-circle-link, #hero::after{
+      #hero .sp-content h2, #hero .sp-content h2.frame-5 span, #hero .sp-circle-link, #hero::after,
+      .project-card, .page-transition{
         animation:none !important; transition:none !important;
       }
       #hero .sp-content{ place-items:start; padding-top: calc(var(--header-pad) * 2 + 24px); }
+      #hero .hero-video-layer{ display:none; }
+      .project-card{ opacity:1 !important; transform:none !important; }
     }
   </style>
 </head>
@@ -436,6 +557,7 @@
        HERO
        ============================================== -->
   <section id="hero" aria-label="Portada">
+    <div class="hero-video-layer" id="hero-video-layer" aria-hidden="true"></div>
     <div class="sp-container">
       <div class="sp-content">
         <h2 class="frame-1">MARCAS CON PROPÓSITO</h2>
@@ -542,11 +664,26 @@
   </section>
 
   <!-- ==============================================
-       OTRAS SECCIONES (placeholders)
+       PORTFOLIO MINI BANNERS
        ============================================== -->
-  <section id="portfolio" aria-label="Portfolio"></section>
+  <section id="portfolio" aria-label="Portfolio">
+    <div class="container portfolio-inner">
+      <div class="portfolio-head">
+        <p class="eyebrow">Selección reciente</p>
+        <h2>Mini banners que resumen el ADN de cada marca</h2>
+        <p class="portfolio-copy">Cada banner condensa branding, lettering y dirección de arte en un cuadrado flexible. Se cargan desde un JSON liviano para mantener la página rápida y poder actualizar el portfolio sin tocar el HTML.</p>
+      </div>
+
+      <div class="portfolio-controls" id="portfolio-filters" role="toolbar" aria-label="Filtrar proyectos por disciplina"></div>
+
+      <div class="project-grid" id="project-grid" aria-live="polite" aria-label="Listado de proyectos"></div>
+      <p class="portfolio-status" id="portfolio-status" role="status">Cargando proyectos…</p>
+    </div>
+  </section>
   <section id="contacto" aria-label="Contacto"></section>
   <section id="extra" aria-label="Extra"></section>
+
+  <span class="page-transition" aria-hidden="true"></span>
 
   <!-- ==============================================
        JS — utilidades y comportamientos
@@ -556,6 +693,81 @@
     /* ---------- helpers ---------- */
     const $ = (sel, ctx=document) => ctx.querySelector(sel);
     const $$ = (sel, ctx=document) => Array.from(ctx.querySelectorAll(sel));
+
+    /* ---------- hero background video (con fallback) ---------- */
+    (function(){
+      const hero = $('#hero');
+      if (!hero) return;
+      const layer = $('#hero-video-layer', hero);
+      if (!layer) return;
+
+      const prefersReduce = typeof window.matchMedia === 'function'
+        && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (prefersReduce) return;
+
+      const testVideo = document.createElement('video');
+      const canPlayWebM = typeof testVideo.canPlayType === 'function'
+        && testVideo.canPlayType('video/webm; codecs="vp9"');
+      if (!canPlayWebM) return;
+
+      const heroVideos = {
+        desktop: [
+          { minWidth: 1440, src: '/asset/video/hero-w1080.webm' },
+          { minWidth: 0, src: '/asset/video/hero-w720.webm' }
+        ],
+        mobile: [
+          // Reservado para futuras versiones mobile (vertical, 9:16)
+        ]
+      };
+
+      const video = document.createElement('video');
+      video.autoplay = true;
+      video.muted = true;
+      video.loop = true;
+      video.playsInline = true;
+      video.preload = 'auto';
+      video.setAttribute('aria-hidden', 'true');
+
+      let currentSrc = '';
+
+      const getDesktopSrc = () => {
+        const width = window.innerWidth || document.documentElement.clientWidth;
+        const source = heroVideos.desktop
+          .slice()
+          .sort((a, b) => b.minWidth - a.minWidth)
+          .find(item => width >= item.minWidth) || heroVideos.desktop[heroVideos.desktop.length - 1];
+        return source ? source.src : '';
+      };
+
+      const updateSrc = () => {
+        const nextSrc = getDesktopSrc();
+        if (!nextSrc || nextSrc === currentSrc) return;
+        currentSrc = nextSrc;
+        video.src = currentSrc;
+        video.load();
+      };
+
+      let resizeRaf;
+      const onResize = () => {
+        if (resizeRaf) cancelAnimationFrame(resizeRaf);
+        resizeRaf = requestAnimationFrame(updateSrc);
+      };
+
+      video.addEventListener('loadeddata', () => {
+        layer.classList.add('is-active');
+        hero.classList.add('has-hero-video');
+      }, { once:true });
+
+      video.addEventListener('error', () => {
+        layer.remove();
+        window.removeEventListener('resize', onResize);
+        hero.classList.remove('has-hero-video');
+      }, { once:true });
+
+      layer.appendChild(video);
+      updateSrc();
+      window.addEventListener('resize', onResize);
+    })();
 
     /* ---------- nav/overlay ---------- */
     const header  = $('#site-header');
@@ -650,6 +862,197 @@
         });
       });
     }
+
+    /* ---------- portfolio grid & filtros ---------- */
+    const portfolioSection = $('#portfolio');
+    if (portfolioSection){
+      const filtersWrap = $('#portfolio-filters', portfolioSection);
+      const grid = $('#project-grid', portfolioSection);
+      const statusEl = $('#portfolio-status', portfolioSection);
+      const observer = 'IntersectionObserver' in window ? new IntersectionObserver((entries, obs) => {
+        entries.forEach(entry => {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add('is-visible');
+          obs.unobserve(entry.target);
+        });
+      }, { threshold:.35 }) : null;
+
+      let allProjects = [];
+      let activeTag = 'all';
+
+      const initialStatus = statusEl ? statusEl.textContent : '';
+
+      function setStatus(message){
+        if (!statusEl) return;
+        statusEl.textContent = message;
+        statusEl.classList.toggle('is-idle', !message);
+      }
+
+      setStatus(initialStatus);
+
+      function renderFilters(){
+        if (!filtersWrap) return;
+        const tags = Array.from(new Set(allProjects.flatMap(p => p.tags || [])))
+          .sort((a, b) => a.localeCompare(b, 'es', { sensitivity: 'base' }));
+        filtersWrap.innerHTML = '';
+        const frag = document.createDocumentFragment();
+
+        function createButton(label, value){
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'filter-chip' + (value === activeTag ? ' is-active' : '');
+          btn.dataset.tag = value;
+          btn.textContent = label;
+          btn.addEventListener('click', () => applyFilter(value));
+          return btn;
+        }
+
+        frag.appendChild(createButton('Todo', 'all'));
+        tags.forEach(tag => frag.appendChild(createButton(tag, tag.toLowerCase())));
+        filtersWrap.appendChild(frag);
+      }
+
+      function renderProjects(){
+        if (!grid) return;
+        grid.innerHTML = '';
+        const frag = document.createDocumentFragment();
+
+        allProjects.forEach((project, index) => {
+          const card = document.createElement('article');
+          card.className = 'project-card';
+          card.style.setProperty('--delay', `${index * 70}ms`);
+          const normalizedTags = (project.tags || []).map(tag => tag.toLowerCase());
+          card.dataset.tags = normalizedTags.join('|');
+
+          const projectTitle = project.title || 'Proyecto sin título';
+          const link = document.createElement('a');
+          link.className = 'project-link';
+          link.href = project.url || '#';
+          link.setAttribute('data-transition', 'page');
+          link.setAttribute('aria-label', `${projectTitle} — ver proyecto completo`);
+
+          const media = document.createElement('div');
+          media.className = 'project-media';
+          if (project.image){
+            media.style.backgroundImage = `url('${project.image}')`;
+          } else {
+            media.style.backgroundImage = 'linear-gradient(135deg, #1f1f2b, #29293c)';
+          }
+
+          const meta = document.createElement('div');
+          meta.className = 'project-meta';
+
+          const tagsList = document.createElement('ul');
+          tagsList.className = 'tag-list';
+          (project.tags || []).forEach(tag => {
+            const li = document.createElement('li');
+            li.textContent = tag;
+            tagsList.appendChild(li);
+          });
+
+          const title = document.createElement('h3');
+          title.textContent = projectTitle;
+
+          if (tagsList.children.length){
+            meta.appendChild(tagsList);
+          }
+          meta.appendChild(title);
+
+          link.appendChild(media);
+          link.appendChild(meta);
+          card.appendChild(link);
+          frag.appendChild(card);
+          if (observer){
+            observer.observe(card);
+          } else {
+            card.classList.add('is-visible');
+          }
+        });
+
+        grid.appendChild(frag);
+        applyFilter(activeTag);
+      }
+
+      function applyFilter(tag){
+        activeTag = tag;
+        if (filtersWrap){
+          filtersWrap.querySelectorAll('[data-tag]').forEach(btn => {
+            btn.classList.toggle('is-active', btn.dataset.tag === tag);
+          });
+        }
+        let visibleCount = 0;
+        $$('.project-card', grid).forEach(card => {
+          const tags = (card.dataset.tags || '').split('|');
+          const shouldShow = tag === 'all' || tags.includes(tag);
+          card.hidden = !shouldShow;
+          if (shouldShow) visibleCount += 1;
+        });
+
+        if (visibleCount === 0){
+          setStatus('No hay proyectos en esa categoría todavía.');
+        } else {
+          setStatus('');
+        }
+      }
+
+      fetch('projects.json')
+        .then(res => {
+          if (!res.ok) throw new Error('Error de red');
+          return res.json();
+        })
+        .then(data => {
+          allProjects = Array.isArray(data) ? data : [];
+          if (!allProjects.length){
+            setStatus('Pronto sumaré casos nuevos.');
+            return;
+          }
+          setStatus('');
+          renderFilters();
+          renderProjects();
+        })
+        .catch(() => {
+          setStatus('No pude cargar los proyectos. Intentá nuevamente más tarde.');
+        });
+    }
+
+    /* ---------- page transitions ---------- */
+    (function(){
+      const overlay = document.querySelector('.page-transition');
+      if (!overlay) return;
+
+      function shouldBypass(event){
+        return event.metaKey || event.ctrlKey || event.shiftKey || event.altKey;
+      }
+
+      document.addEventListener('click', e => {
+        const link = e.target.closest('a[data-transition="page"]');
+        if (!link || shouldBypass(e)) return;
+        const href = link.getAttribute('href');
+        if (!href || href.startsWith('#') || link.target === '_blank' || link.hasAttribute('download')) return;
+        e.preventDefault();
+        overlay.classList.add('is-active');
+        let didNavigate = false;
+        const prefersReduce = typeof window.matchMedia === 'function' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        const proceed = () => {
+          if (didNavigate) return;
+          didNavigate = true;
+          window.location.href = href;
+        };
+
+        const fallback = setTimeout(proceed, prefersReduce ? 0 : 520);
+
+        overlay.addEventListener('transitionend', (event) => {
+          if (event.propertyName !== 'transform') return;
+          clearTimeout(fallback);
+          proceed();
+        }, { once:true });
+      });
+
+      window.addEventListener('pageshow', () => {
+        overlay.classList.remove('is-active');
+      });
+    })();
   })();
   </script>
 </body>

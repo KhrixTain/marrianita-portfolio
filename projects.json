@@ -1,0 +1,44 @@
+[
+  {
+    "id": "ritual-bloom",
+    "title": "Ritual Bloom · Branding sensorial",
+    "tags": ["Branding", "Packaging"],
+    "image": "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=800&q=80",
+    "url": "https://example.com/proyectos/ritual-bloom"
+  },
+  {
+    "id": "andes-letter",
+    "title": "Andes Letter · Exploración tipográfica",
+    "tags": ["Lettering", "Tipografía"],
+    "image": "https://images.unsplash.com/photo-1470309864661-68328b2cd0a5?auto=format&fit=crop&w=800&q=80",
+    "url": "https://example.com/proyectos/andes-letter"
+  },
+  {
+    "id": "lunar-ui",
+    "title": "Lunar UI Kit · Micro interacciones",
+    "tags": ["UI", "Producto"],
+    "image": "https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=800&q=80",
+    "url": "https://example.com/proyectos/lunar-ui"
+  },
+  {
+    "id": "solstice-campaign",
+    "title": "Solstice · Campaña editorial",
+    "tags": ["Editorial", "Dirección de arte"],
+    "image": "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=800&q=80",
+    "url": "https://example.com/proyectos/solstice"
+  },
+  {
+    "id": "cocoa-social",
+    "title": "Cocoa Social · Feed para RRSS",
+    "tags": ["Redes sociales", "Branding"],
+    "image": "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?auto=format&fit=crop&w=800&q=80",
+    "url": "https://example.com/proyectos/cocoa-social"
+  },
+  {
+    "id": "flora-pack",
+    "title": "Flora Pack · Sistema ilustrado",
+    "tags": ["Ilustración", "Packaging"],
+    "image": "https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?auto=format&fit=crop&w=800&q=80",
+    "url": "https://example.com/proyectos/flora-pack"
+  }
+]
