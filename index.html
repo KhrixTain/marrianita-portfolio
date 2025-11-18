@@ -191,14 +191,8 @@
       position:absolute; inset:0; z-index:-2;
       opacity:0; transition: opacity .6s ease;
       background:inherit;
-      overflow:hidden; pointer-events:none;
     }
     #hero .hero-video-layer.is-active{ opacity:1; }
-    #hero .hero-video-layer::after{
-      content:""; position:absolute; inset:0;
-      background:linear-gradient(160deg, rgba(6,6,12,.7) 0%, rgba(5,5,10,.35) 40%, rgba(6,4,11,.65) 100%);
-      mix-blend-mode:multiply;
-    }
     #hero .hero-video-layer video{
       width:100%; height:100%; object-fit:cover;
       filter:saturate(1.15);
@@ -755,13 +749,11 @@
 
       video.addEventListener('loadeddata', () => {
         layer.classList.add('is-active');
-        hero.classList.add('has-hero-video');
       }, { once:true });
 
       video.addEventListener('error', () => {
         layer.remove();
         window.removeEventListener('resize', onResize);
-        hero.classList.remove('has-hero-video');
       }, { once:true });
 
       layer.appendChild(video);
