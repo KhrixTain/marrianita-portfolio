@@ -187,6 +187,17 @@
         radial-gradient(ellipse at center, rgba(0,0,0,.08), rgba(0,0,0,.3) 60%, rgba(0,0,0,.6)),
         linear-gradient(120deg,#f5c0c0 0%, #fdeede 50%, #bfe9e9 100%);
     }
+    #hero .hero-video-layer{
+      position:absolute; inset:0; z-index:-2;
+      opacity:0; transition: opacity .6s ease;
+      background:inherit;
+    }
+    #hero .hero-video-layer.is-active{ opacity:1; }
+    #hero .hero-video-layer video{
+      width:100%; height:100%; object-fit:cover;
+      filter:saturate(1.15);
+      display:block;
+    }
     #hero::before{
       content:""; position:absolute; inset:0; z-index:-1;
       background:
@@ -466,6 +477,7 @@
         animation:none !important; transition:none !important;
       }
       #hero .sp-content{ place-items:start; padding-top: calc(var(--header-pad) * 2 + 24px); }
+      #hero .hero-video-layer{ display:none; }
       .project-card{ opacity:1 !important; transform:none !important; }
     }
   </style>
@@ -534,6 +546,7 @@
        HERO
        ============================================== -->
   <section id="hero" aria-label="Portada">
+    <div class="hero-video-layer" id="hero-video-layer" aria-hidden="true"></div>
     <div class="sp-container">
       <div class="sp-content">
         <h2 class="frame-1">MARCAS CON PROPÓSITO</h2>
@@ -669,6 +682,79 @@
     /* ---------- helpers ---------- */
     const $ = (sel, ctx=document) => ctx.querySelector(sel);
     const $$ = (sel, ctx=document) => Array.from(ctx.querySelectorAll(sel));
+
+    /* ---------- hero background video (con fallback) ---------- */
+    (function(){
+      const hero = $('#hero');
+      if (!hero) return;
+      const layer = $('#hero-video-layer', hero);
+      if (!layer) return;
+
+      const prefersReduce = typeof window.matchMedia === 'function'
+        && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (prefersReduce) return;
+
+      const testVideo = document.createElement('video');
+      const canPlayWebM = typeof testVideo.canPlayType === 'function'
+        && testVideo.canPlayType('video/webm; codecs="vp9"');
+      if (!canPlayWebM) return;
+
+      const heroVideos = {
+        desktop: [
+          { minWidth: 1440, src: '/asset/video/hero-w1080.webm' },
+          { minWidth: 0, src: '/asset/video/hero-w720.webm' }
+        ],
+        mobile: [
+          // Reservado para futuras versiones mobile (vertical, 9:16)
+        ]
+      };
+
+      const video = document.createElement('video');
+      video.autoplay = true;
+      video.muted = true;
+      video.loop = true;
+      video.playsInline = true;
+      video.preload = 'auto';
+      video.setAttribute('aria-hidden', 'true');
+
+      let currentSrc = '';
+
+      const getDesktopSrc = () => {
+        const width = window.innerWidth || document.documentElement.clientWidth;
+        const source = heroVideos.desktop
+          .slice()
+          .sort((a, b) => b.minWidth - a.minWidth)
+          .find(item => width >= item.minWidth) || heroVideos.desktop[heroVideos.desktop.length - 1];
+        return source ? source.src : '';
+      };
+
+      const updateSrc = () => {
+        const nextSrc = getDesktopSrc();
+        if (!nextSrc || nextSrc === currentSrc) return;
+        currentSrc = nextSrc;
+        video.src = currentSrc;
+        video.load();
+      };
+
+      let resizeRaf;
+      const onResize = () => {
+        if (resizeRaf) cancelAnimationFrame(resizeRaf);
+        resizeRaf = requestAnimationFrame(updateSrc);
+      };
+
+      video.addEventListener('loadeddata', () => {
+        layer.classList.add('is-active');
+      }, { once:true });
+
+      video.addEventListener('error', () => {
+        layer.remove();
+        window.removeEventListener('resize', onResize);
+      }, { once:true });
+
+      layer.appendChild(video);
+      updateSrc();
+      window.addEventListener('resize', onResize);
+    })();
 
     /* ---------- nav/overlay ---------- */
     const header  = $('#site-header');
